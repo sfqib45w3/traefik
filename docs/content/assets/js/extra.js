@@ -1,14 +1,33 @@
-/* Highlight */
-(function(hljs) {
-    hljs.initHighlightingOnLoad();
-})(hljs);
+// Extra JavaScript for documentation
 
-/* Scarf Analytics - cookieless, anonymous company-level intelligence */
-(function() {
-    var img = document.createElement('img');
-    img.src = 'https://static.scarf.sh/a.png?x-pxid=1a49232a-b165-4015-8ed2-a1092f1f0d83';
-    img.referrerPolicy = 'no-referrer-when-downgrade';
-    img.loading = 'eager';
-    img.style.cssText = 'visibility:hidden;position:absolute;width:1px;height:1px;';
-    document.body.appendChild(img);
-})();
+document.addEventListener('DOMContentLoaded', function() {
+  // Add smooth scrolling for anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      e.preventDefault();
+      const target = document.querySelector(this.getAttribute('href'));
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // Highlight current section in sidebar based on scroll position
+  const sections = document.querySelectorAll('main h2, main h3');
+  const navLinks = document.querySelectorAll('.md-nav__link');
+
+  if (sections.length && navLinks.length) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          navLinks.forEach(link => {
+            link.classList.toggle('md-nav__link--active', link.getAttribute('href') === `#${id}`);
+          });
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+
+    sections.forEach(section => observer.observe(section));
+  }
+});
